@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizon Code Companion — Software Development Foundations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1e3a5f;
+            --teal: #2a9d8f;
+            --purple: #7b2d8e;
+            --dark: #1a1a2e;
+            --gray: #f8f9fa;
+            --text: #2d3436;
+            --light: #ffffff;
+            --accent: #e76f51;
+            --green: #2ecc71;
+            --code-bg: #0d1117;
+            --code-text: #c9d1d9;
+            --gradient: linear-gradient(135deg, var(--navy), var(--teal));
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--light);
+        }
+
+        /* ── Hero ─────────────────────── */
+        .hero {
+            background: var(--gradient);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: drift 20s linear infinite;
+        }
+        @keyframes drift { to { transform: translate(30px, 30px); } }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        .hero .subtitle {
+            font-size: 1.15rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
+        .hero .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .hero .badge .green { color: var(--green); }
+
+        /* ── Container ────────────────── */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ── Nav ──────────────────────── */
+        nav {
+            background: var(--dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        nav .container {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        nav a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        nav a:hover, nav a.active {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ── Chapter Cards ────────────── */
+        .chapters { padding: 3rem 0; }
+        .chapters h2 {
+            font-size: 1.8rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+        .chapters .part-label {
+            font-size: 0.85rem;
+            color: var(--teal);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 2.5rem 0 1rem;
+            border-bottom: 2px solid var(--teal);
+            padding-bottom: 0.3rem;
+        }
+        .chapter-card {
+            background: var(--gray);
+            border-radius: 12px;
+            border-left: 4px solid var(--teal);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .chapter-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        .chapter-card h3 {
+            color: var(--navy);
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .chapter-card .file-ref {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--teal);
+            margin-bottom: 0.5rem;
+        }
+        .chapter-card p {
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+        .concepts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        .concept-tag {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--navy);
+        }
+
+        /* ── Code Blocks ──────────────── */
+        .code-section {
+            background: var(--code-bg);
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        .code-header {
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-header .lang {
+            color: var(--teal);
+            font-weight: 500;
+        }
+        pre {
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: var(--code-text);
+        }
+        .comment { color: #8b949e; }
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .function { color: #d2a8ff; }
+        .decorator { color: #79c0ff; }
+        .class-name { color: #7ee787; }
+
+        /* ── Explanation Boxes ─────────── */
+        .explain {
+            background: linear-gradient(135deg, #f0f7ff, #f5f0ff);
+            border-left: 3px solid var(--purple);
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        .explain strong { color: var(--purple); }
+        .explain.tip {
+            background: linear-gradient(135deg, #f0fff4, #e8f5e9);
+            border-left-color: var(--green);
+        }
+        .explain.tip strong { color: #27ae60; }
+        .explain.warning {
+            background: linear-gradient(135deg, #fff8e1, #fff3e0);
+            border-left-color: var(--accent);
+        }
+        .explain.warning strong { color: var(--accent); }
+
+        /* ── Footer ───────────────────── */
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.85rem;
+        }
+        footer a { color: var(--teal); }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.8rem; }
+            nav .container { gap: 0.5rem; }
+            nav a { font-size: 0.75rem; padding: 0.2rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ Hero ═══════════════════════════════════════════════ -->
+<header class="hero">
+    <h1>🏗️ Horizon Code Companion</h1>
+    <p class="subtitle">
+        Every code snippet from <em>Software Development Foundations in the Age of Agentic AI</em> — explained, tested, and ready to run.
+    </p>
+    <span class="badge"><span class="green">✓</span> 81 tests passing · Python 3.12 · MIT License</span>
+</header>
+
+<!-- ═══ Nav ════════════════════════════════════════════════ -->
+<nav>
+    <div class="container">
+        <a href="#ch3">Ch.3 CLI</a>
+        <a href="#ch4">Ch.4 Models</a>
+        <a href="#ch5">Ch.5 Services</a>
+        <a href="#ch6">Ch.6 Database</a>
+        <a href="#ch7">Ch.7 API</a>
+        <a href="#ch9">Ch.9 Testing</a>
+        <a href="#ch10">Ch.10 Security</a>
+        <a href="#ch11">Ch.11 Errors</a>
+        <a href="#ch12">Ch.12 CI/CD</a>
+        <a href="#ch13">Ch.13 Docker</a>
+        <a href="https://github.com/Asembereng/horizon-companion" target="_blank">GitHub →</a>
+    </div>
+</nav>
+
+<!-- ═══ Chapter Content ═══════════════════════════════════ -->
+<main class="chapters">
+    <div class="container">
+
+        <h2>Code Walkthrough by Chapter</h2>
+        <p style="margin-bottom:2rem;color:#636e72;">Click any chapter to see the code, what it teaches, and how to run it yourself.</p>
+
+        <!-- ── Part I: Foundations ──────────────── -->
+        <div class="part-label">Part I — Foundations</div>
+
+        <div class="chapter-card" id="ch3">
+            <h3>Chapter 3: Programming Fundamentals — The CLI Task Creator</h3>
+            <div class="file-ref">📁 horizon/cli.py · tests/test_ch03_cli.py</div>
+            <p>Your first Horizon program: a command-line tool that creates, lists, updates, and deletes tasks. Introduces functions, data structures, input validation, and the CRUD pattern.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">Python</span> horizon/cli.py</div>
+<pre><span class="keyword">def</span> <span class="function">create_task</span>(title: <span class="class-name">str</span>, assignee: <span class="class-name">str</span>, priority: <span class="class-name">int</span> = 0) -> <span class="class-name">dict</span>:
+    <span class="string">"""Create a new task and add it to the task list."""</span>
+    <span class="keyword">if not</span> validate_title(title):
+        <span class="keyword">raise</span> <span class="class-name">ValueError</span>(<span class="string">f"Title cannot be empty or exceed 200 characters."</span>)
+
+    task = {
+        <span class="string">"id"</span>: _next_id,
+        <span class="string">"title"</span>: title.strip(),
+        <span class="string">"assignee"</span>: assignee,
+        <span class="string">"status"</span>: <span class="string">"to_do"</span>,
+        <span class="string">"priority"</span>: priority,
+    }
+    tasks.append(task)
+    <span class="keyword">return</span> task</pre>
+            </div>
+
+            <div class="explain">
+                <strong>What you learn here:</strong> Every function does <em>one thing</em> (Single Responsibility). <code>validate_title()</code> checks validity; <code>create_task()</code> creates. Input is validated <em>before</em> processing — a pattern you'll use in every chapter going forward.
+            </div>
+
+            <div class="concepts">
+                <span class="concept-tag">Functions</span>
+                <span class="concept-tag">Dictionaries</span>
+                <span class="concept-tag">Input validation</span>
+                <span class="concept-tag">CRUD operations</span>
+                <span class="concept-tag">Error handling</span>
+            </div>
+        </div>
+
+        <!-- ── Part II: Building with Intention ───── -->
+        <div class="part-label">Part II — Building with Intention</div>
+
+        <div class="chapter-card" id="ch4">
+            <h3>Chapter 4 & 5: Clean Code & Design Principles — Domain Models</h3>
+            <div class="file-ref">📁 horizon/models.py · horizon/services.py</div>
+            <p>Transforms the simple dictionary approach into proper domain models using dataclasses, enums, and the SOLID principles. Introduces the Repository pattern and dependency injection.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">Python</span> horizon/models.py</div>
+<pre><span class="decorator">@dataclass</span>
+<span class="keyword">class</span> <span class="class-name">Task</span>:
+    <span class="string">"""A Horizon task — SRP: holds task data only."""</span>
+    id: <span class="class-name">int</span>
+    title: <span class="class-name">str</span>
+    assignee: <span class="class-name">User</span>
+    status: <span class="class-name">TaskStatus</span> = TaskStatus.TO_DO
+    priority: <span class="class-name">TaskPriority</span> = TaskPriority.NORMAL
+
+    <span class="keyword">def</span> <span class="function">can_be_deleted_by</span>(self, user: <span class="class-name">User</span>) -> <span class="class-name">bool</span>:
+        <span class="string">"""Only the assignee can delete a task."""</span>
+        <span class="keyword">return</span> user.id == self.assignee.id</pre>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">Python</span> horizon/models.py — Dependency Inversion</div>
+<pre><span class="keyword">class</span> <span class="class-name">TaskRepository</span>(<span class="class-name">Protocol</span>):
+    <span class="string">"""Abstract interface — depend on this, not a concrete DB."""</span>
+    <span class="keyword">def</span> <span class="function">save</span>(self, task: <span class="class-name">Task</span>) -> <span class="class-name">Task</span>: ...
+    <span class="keyword">def</span> <span class="function">find_by_id</span>(self, task_id: <span class="class-name">int</span>) -> <span class="class-name">Task</span> | <span class="keyword">None</span>: ...
+    <span class="keyword">def</span> <span class="function">delete</span>(self, task_id: <span class="class-name">int</span>) -> <span class="class-name">bool</span>: ...</pre>
+            </div>
+
+            <div class="explain">
+                <strong>SOLID in action:</strong> <code>Task</code> holds data (SRP). <code>TaskRepository</code> is a Protocol — an abstract interface (DIP). <code>TaskService</code> depends on the interface, not a specific database. You can swap SQLite for PostgreSQL without changing a single line in the service layer.
+            </div>
+
+            <div class="concepts">
+                <span class="concept-tag">Dataclasses</span>
+                <span class="concept-tag">Enums</span>
+                <span class="concept-tag">SRP</span>
+                <span class="concept-tag">OCP</span>
+                <span class="concept-tag">DIP</span>
+                <span class="concept-tag">Protocol/Interface</span>
+                <span class="concept-tag">Repository pattern</span>
+            </div>
+        </div>
+
+        <div class="chapter-card" id="ch5" style="border-left-color: var(--purple);">
+            <h3>Chapter 5: Service Layer — Coordinating Operations</h3>
+            <div class="file-ref">📁 horizon/services.py</div>
+            <p>The service layer coordinates operations between models, repositories, and notification services. Demonstrates dependency injection — the service receives its dependencies, it doesn't create them.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">Python</span> horizon/services.py</div>
+<pre><span class="keyword">class</span> <span class="class-name">TaskService</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, repo: <span class="class-name">TaskRepository</span>, notifier: <span class="class-name">NotificationService</span> | <span class="keyword">None</span> = <span class="keyword">None</span>):
+        self._repo = repo        <span class="comment"># Injected — could be in-memory or SQL</span>
+        self._notifier = notifier <span class="comment"># Injected — could be console or email</span>
+
+    <span class="keyword">def</span> <span class="function">delete_task</span>(self, task_id: <span class="class-name">int</span>, requesting_user: <span class="class-name">User</span>) -> <span class="class-name">bool</span>:
+        <span class="string">"""Delete a task IF the user has permission."""</span>
+        task = self._repo.find_by_id(task_id)
+        <span class="keyword">if not</span> task.can_be_deleted_by(requesting_user):
+            <span class="keyword">raise</span> <span class="class-name">PermissionError</span>(<span class="string">"Not authorized"</span>)
+        <span class="keyword">return</span> self._repo.delete(task_id)</pre>
+            </div>
+
+            <div class="explain tip">
+                <strong>💡 Key insight:</strong> Notice <code>TaskService.__init__</code> takes <code>repo</code> and <code>notifier</code> as parameters. This is dependency injection. In tests, you pass <code>InMemoryTaskRepository</code>. In production, you pass <code>SQLiteTaskRepository</code>. The service doesn't know or care which one — it just calls <code>.save()</code>.
+            </div>
+        </div>
+
+        <div class="chapter-card" id="ch6">
+            <h3>Chapter 6: Data Modeling — SQLite Database</h3>
+            <div class="file-ref">📁 horizon/database.py · tests/test_ch06_database.py</div>
+            <p>Real database persistence using SQLite. Demonstrates SQL schema design, parameterised queries (preventing SQL injection), and the repository pattern with a concrete implementation.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">SQL</span> Schema (inside database.py)</div>
+<pre><span class="keyword">CREATE TABLE IF NOT EXISTS</span> tasks (
+    id          <span class="class-name">INTEGER</span> <span class="keyword">PRIMARY KEY AUTOINCREMENT</span>,
+    title       <span class="class-name">TEXT</span>    <span class="keyword">NOT NULL</span>,
+    status      <span class="class-name">TEXT</span>    <span class="keyword">NOT NULL DEFAULT</span> <span class="string">'to_do'</span>,
+    priority    <span class="class-name">INTEGER</span> <span class="keyword">NOT NULL DEFAULT</span> 1,
+    assignee_id <span class="class-name">INTEGER</span> <span class="keyword">NOT NULL REFERENCES</span> users(id),
+    project_id  <span class="class-name">INTEGER</span> <span class="keyword">REFERENCES</span> projects(id),
+    created_at  <span class="class-name">TEXT</span>    <span class="keyword">NOT NULL DEFAULT</span> (datetime(<span class="string">'now'</span>))
+);</pre>
+            </div>
+
+            <div class="explain warning">
+                <strong>⚠️ Security note:</strong> All queries use <code>?</code> placeholders — <em>never</em> f-strings or concatenation. <code>conn.execute("SELECT * FROM tasks WHERE id = ?", (task_id,))</code> prevents SQL injection attacks. This is non-negotiable in production code.
+            </div>
+
+            <div class="concepts">
+                <span class="concept-tag">SQL</span>
+                <span class="concept-tag">Normalisation</span>
+                <span class="concept-tag">Foreign keys</span>
+                <span class="concept-tag">Parameterised queries</span>
+                <span class="concept-tag">Context managers</span>
+            </div>
+        </div>
+
+        <div class="chapter-card" id="ch7" style="border-left-color: var(--accent);">
+            <h3>Chapter 7: APIs — REST Endpoints</h3>
+            <div class="file-ref">📁 horizon/api.py · tests/test_ch07_api.py</div>
+            <p>A REST API using Python's built-in <code>http.server</code> — no external frameworks needed. Demonstrates HTTP methods, JSON responses, status codes, and RESTful resource design.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">HTTP</span> API Design</div>
+<pre><span class="keyword">GET</span>    /health     <span class="comment">→ 200 {"status": "ok"}</span>
+<span class="keyword">GET</span>    /tasks      <span class="comment">→ 200 [{task}, {task}, ...]</span>
+<span class="keyword">GET</span>    /tasks/1    <span class="comment">→ 200 {task} or 404</span>
+<span class="keyword">POST</span>   /tasks      <span class="comment">→ 201 {created task} or 400</span>
+<span class="keyword">DELETE</span> /tasks/1    <span class="comment">→ 204 or 403 or 404</span></pre>
+            </div>
+
+            <div class="concepts">
+                <span class="concept-tag">REST</span>
+                <span class="concept-tag">HTTP methods</span>
+                <span class="concept-tag">Status codes</span>
+                <span class="concept-tag">JSON</span>
+                <span class="concept-tag">Content negotiation</span>
+            </div>
+        </div>
+
+        <!-- ── Part III: Engineering for Quality ───── -->
+        <div class="part-label">Part III — Engineering for Quality</div>
+
+        <div class="chapter-card" id="ch9" style="border-left-color: var(--green);">
+            <h3>Chapter 9: Testing — The Safety Net</h3>
+            <div class="file-ref">📁 tests/test_ch03_cli.py through test_ch11_errors.py</div>
+            <p>81 tests covering every module. Demonstrates unit tests (isolated functions), integration tests (database queries), and API tests (HTTP endpoints). Uses pytest fixtures for clean setup.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">Python</span> tests/test_ch05_services.py — Testing with Mocks</div>
+<pre><span class="keyword">def</span> <span class="function">test_delete_task_unauthorized</span>(self, service, amara, ben):
+    <span class="string">"""Ben tries to delete Amara's task — should fail."""</span>
+    task = service.create_task(<span class="string">"Task"</span>, amara)
+    <span class="keyword">with</span> pytest.raises(<span class="class-name">PermissionError</span>):
+        service.delete_task(task.id, ben)  <span class="comment"># Ben is not the assignee</span></pre>
+            </div>
+
+            <div class="explain tip">
+                <strong>💡 Testing philosophy:</strong> Notice we're testing <code>TaskService</code> with <code>InMemoryTaskRepository</code> — no database needed. That's the power of dependency injection: fast, isolated tests. The database tests in <code>test_ch06_database.py</code> test the SQLite implementation separately.
+            </div>
+        </div>
+
+        <div class="chapter-card" id="ch10" style="border-left-color: #e74c3c;">
+            <h3>Chapter 10: Security — Authentication & Defence in Depth</h3>
+            <div class="file-ref">📁 horizon/auth.py · tests/test_ch10_security.py</div>
+            <p>Password hashing with bcrypt, JWT-like token generation, input validation, and XSS sanitization. Demonstrates why security is code, not an afterthought.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">Python</span> horizon/auth.py — Token Verification</div>
+<pre><span class="keyword">def</span> <span class="function">verify_token</span>(token: <span class="class-name">str</span>) -> <span class="class-name">dict</span> | <span class="keyword">None</span>:
+    <span class="string">"""Verify a token's signature and expiration."""</span>
+    parts = token.split(<span class="string">"."</span>)
+    <span class="keyword">if</span> len(parts) != 3: <span class="keyword">return</span> <span class="keyword">None</span>
+
+    header_b64, payload_b64, signature = parts
+    expected = hmac.new(_SECRET_KEY.encode(),
+        f<span class="string">"{header_b64}.{payload_b64}"</span>.encode(), hashlib.sha256).hexdigest()
+
+    <span class="keyword">if not</span> hmac.compare_digest(signature, expected):
+        <span class="keyword">return</span> <span class="keyword">None</span>  <span class="comment"># Tampered!</span></pre>
+            </div>
+
+            <div class="explain warning">
+                <strong>⚠️ Production note:</strong> This is a simplified JWT implementation for learning. In production, use a library like <code>PyJWT</code> or <code>python-jose</code>. The concepts (signing, verification, expiration) are identical — the library handles edge cases.
+            </div>
+        </div>
+
+        <div class="chapter-card" id="ch11">
+            <h3>Chapter 11: Error Handling — Exceptions & Structured Logging</h3>
+            <div class="file-ref">📁 horizon/exceptions.py · horizon/logging_config.py</div>
+            <p>Custom exception hierarchy for clean error handling, plus JSON-formatted structured logging for production observability.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">Python</span> horizon/exceptions.py</div>
+<pre><span class="keyword">class</span> <span class="class-name">HorizonError</span>(<span class="class-name">Exception</span>):
+    <span class="string">"""Base exception — catch all Horizon errors with one line."""</span>
+
+<span class="keyword">class</span> <span class="class-name">ValidationError</span>(<span class="class-name">HorizonError</span>): ...
+<span class="keyword">class</span> <span class="class-name">NotFoundError</span>(<span class="class-name">HorizonError</span>): ...
+<span class="keyword">class</span> <span class="class-name">AuthenticationError</span>(<span class="class-name">HorizonError</span>): ...
+<span class="keyword">class</span> <span class="class-name">AuthorizationError</span>(<span class="class-name">HorizonError</span>): ...</pre>
+            </div>
+
+            <div class="explain">
+                <strong>Why custom exceptions?</strong> Instead of bare <code>raise Exception("not found")</code>, you raise <code>NotFoundError("Task", 42)</code>. This gives callers specific error types to catch, includes structured data (resource, identifier), and makes debugging trivial — the error tells you <em>what</em> wasn't found and <em>which ID</em> was missing.
+            </div>
+        </div>
+
+        <!-- ── Part IV: Delivering Software ───────── -->
+        <div class="part-label">Part IV — Delivering Software</div>
+
+        <div class="chapter-card" id="ch12" style="border-left-color: #3498db;">
+            <h3>Chapter 12: CI/CD — GitHub Actions Pipeline</h3>
+            <div class="file-ref">📁 .github/workflows/ci.yml</div>
+            <p>Automated testing on every push and pull request. Tests against Python 3.11 and 3.12, generates coverage reports, and runs code quality checks.</p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">YAML</span> .github/workflows/ci.yml</div>
+<pre><span class="keyword">on:</span>
+  <span class="keyword">push:</span>
+    <span class="keyword">branches:</span> [main]
+  <span class="keyword">pull_request:</span>
+    <span class="keyword">branches:</span> [main]
+
+<span class="keyword">jobs:</span>
+  <span class="keyword">test:</span>
+    <span class="keyword">runs-on:</span> ubuntu-latest
+    <span class="keyword">strategy:</span>
+      <span class="keyword">matrix:</span>
+        <span class="keyword">python-version:</span> [<span class="string">"3.11"</span>, <span class="string">"3.12"</span>]
+    <span class="keyword">steps:</span>
+      - <span class="keyword">run:</span> pytest -v --cov=horizon</pre>
+            </div>
+        </div>
+
+        <div class="chapter-card" id="ch13" style="border-left-color: #2980b9;">
+            <h3>Chapter 13: Containers — Dockerfile</h3>
+            <div class="file-ref">📁 Dockerfile</div>
+            <p>Packages Horizon into a Docker container with layer caching, health checks, and a slim base image. Run anywhere with: <code>docker build -t horizon . && docker run -p 8000:8000 horizon</code></p>
+
+            <div class="code-section">
+                <div class="code-header"><span class="lang">Dockerfile</span> Dockerfile</div>
+<pre><span class="keyword">FROM</span> python:3.12-slim
+<span class="keyword">WORKDIR</span> /app
+<span class="keyword">COPY</span> requirements.txt .
+<span class="keyword">RUN</span> pip install --no-cache-dir -r requirements.txt
+<span class="keyword">COPY</span> horizon/ ./horizon/
+<span class="keyword">EXPOSE</span> 8000
+<span class="keyword">HEALTHCHECK</span> --interval=30s --timeout=5s \
+    <span class="keyword">CMD</span> python -c <span class="string">"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"</span>
+<span class="keyword">CMD</span> [<span class="string">"python"</span>, <span class="string">"-m"</span>, <span class="string">"horizon.api"</span>]</pre>
+            </div>
+
+            <div class="explain tip">
+                <strong>💡 Layer caching:</strong> Notice <code>requirements.txt</code> is copied and installed <em>before</em> the application code. Docker caches each layer — so if only your code changes (not dependencies), the <code>pip install</code> step is cached and the rebuild is instant.
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- ═══ Footer ════════════════════════════════════════════ -->
+<footer>
+    <p>
+        🏗️ Horizon Code Companion · Part of <em>Software Development Foundations in the Age of Agentic AI</em><br>
+        <a href="https://github.com/Asembereng/horizon-companion">View on GitHub</a> · 81 tests passing · MIT License
+    </p>
+</footer>
+
+</body>
+</html>
