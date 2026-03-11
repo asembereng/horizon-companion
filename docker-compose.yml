@@ -1,0 +1,40 @@
+# Chapter 25 (DevOps Agent): AI-generated docker-compose.yml
+# Full stack: PostgreSQL, Redis, Django web, Celery worker
+version: "3.9"
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-horizon}
+      POSTGRES_USER: ${DB_USER:-horizon}
+      POSTGRES_PASSWORD: ${DB_PASS:-secret}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-horizon}"]
+      interval: 10s
+      timeout: 5s
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+
+  web:
+    build: .
+    ports: ["8000:8000"]
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    env_file: .env
+
+  worker:
+    build: .
+    command: celery -A horizon worker -l info
+    depends_on: [db, redis]
+    env_file: .env
+
+volumes:
+  pgdata:

@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Django and enterprise variants have separate test configs
+norecursedirs = ["horizon/django", "horizon/enterprise"]
