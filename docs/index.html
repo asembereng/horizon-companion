@@ -8,575 +8,881 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #1e3a5f;
-            --teal: #2a9d8f;
-            --purple: #7b2d8e;
-            --dark: #1a1a2e;
-            --gray: #f8f9fa;
-            --text: #2d3436;
-            --light: #ffffff;
-            --accent: #e76f51;
-            --green: #2ecc71;
-            --code-bg: #0d1117;
-            --code-text: #c9d1d9;
-            --gradient: linear-gradient(135deg, var(--navy), var(--teal));
+            --bg: #ffffff;
+            --bg-alt: #f7f8fa;
+            --text: #1a1a1a;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --teal: #0d9488;
+            --teal-light: #f0fdfa;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --orange: #ea580c;
+            --orange-light: #fff7ed;
+            --green: #16a34a;
+            --red: #dc2626;
+            --code-bg: #0f172a;
+            --code-text: #e2e8f0;
+            --radius: 10px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text);
-            line-height: 1.7;
-            background: var(--light);
+            line-height: 1.65;
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ── Hero ─────────────────────── */
-        .hero {
-            background: var(--gradient);
-            color: white;
-            padding: 4rem 2rem;
+        .container { max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* ── Header ───────────────────── */
+        header {
+            border-bottom: 1px solid var(--border);
+            padding: 3rem 0 2.5rem;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-            animation: drift 20s linear infinite;
-        }
-        @keyframes drift { to { transform: translate(30px, 30px); } }
-        .hero h1 {
-            font-size: 2.5rem;
+        header h1 {
+            font-size: 2rem;
             font-weight: 700;
+            letter-spacing: -0.03em;
             margin-bottom: 0.5rem;
-            position: relative;
         }
-        .hero .subtitle {
-            font-size: 1.15rem;
-            font-weight: 300;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto 1.5rem;
-            position: relative;
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto 1.25rem;
         }
-        .hero .badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 20px;
-            padding: 0.4rem 1rem;
-            font-size: 0.85rem;
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.78rem;
             font-weight: 500;
-            backdrop-filter: blur(10px);
-            position: relative;
+            padding: 0.3rem 0.75rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            background: var(--bg);
         }
-        .hero .badge .green { color: var(--green); }
-
-        /* ── Container ────────────────── */
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+        .badge .dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--green);
         }
 
         /* ── Nav ──────────────────────── */
         nav {
-            background: var(--dark);
-            padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.6rem 0;
         }
         nav .container {
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            gap: 0.25rem;
+            overflow-x: auto;
+            scrollbar-width: none;
             justify-content: center;
         }
+        nav .container::-webkit-scrollbar { display: none; }
         nav a {
-            color: rgba(255,255,255,0.7);
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            padding: 0.3rem 0.7rem;
+            padding: 0.35rem 0.65rem;
             border-radius: 6px;
-            transition: all 0.2s;
+            white-space: nowrap;
+            transition: all 0.15s;
         }
-        nav a:hover, nav a.active {
-            color: white;
-            background: rgba(255,255,255,0.1);
+        nav a:hover { color: var(--text); background: var(--bg-alt); }
+        nav a.gh { color: var(--accent); }
+        nav a.gh:hover { background: var(--accent-light); }
+
+        /* ── Variants ─────────────────── */
+        .variants {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 2.5rem 0 1rem;
+        }
+        .variant-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: box-shadow 0.2s;
+        }
+        .variant-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        .variant-card .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.35rem;
+        }
+        .variant-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+        }
+        .variant-card p {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
+        }
+        .variant-card code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            background: var(--bg-alt);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+        }
+        .v-core .label { color: var(--teal); }
+        .v-core { border-top: 3px solid var(--teal); }
+        .v-django .label { color: var(--accent); }
+        .v-django { border-top: 3px solid var(--accent); }
+        .v-enterprise .label { color: var(--purple); }
+        .v-enterprise { border-top: 3px solid var(--purple); }
+
+        /* ── Section ──────────────────── */
+        section { padding: 2rem 0 0; }
+        .part-header {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            padding: 2rem 0 0.6rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.25rem;
         }
 
         /* ── Chapter Cards ────────────── */
-        .chapters { padding: 3rem 0; }
-        .chapters h2 {
-            font-size: 1.8rem;
-            color: var(--navy);
-            margin-bottom: 0.5rem;
+        .card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s;
         }
-        .chapters .part-label {
-            font-size: 0.85rem;
-            color: var(--teal);
+        .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+        .card h3 {
+            font-size: 1rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 2.5rem 0 1rem;
-            border-bottom: 2px solid var(--teal);
-            padding-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
         }
-        .chapter-card {
-            background: var(--gray);
-            border-radius: 12px;
-            border-left: 4px solid var(--teal);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .chapter-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        }
-        .chapter-card h3 {
-            color: var(--navy);
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
-        }
-        .chapter-card .file-ref {
+        .card .file-ref {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--teal);
+            font-size: 0.72rem;
+            color: var(--text-secondary);
             margin-bottom: 0.5rem;
         }
-        .chapter-card p {
-            font-size: 0.95rem;
-            margin-bottom: 0.8rem;
-        }
-        .concepts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-        .concept-tag {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            padding: 0.2rem 0.6rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--navy);
+        .card > p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            line-height: 1.55;
         }
 
-        /* ── Code Blocks ──────────────── */
-        .code-section {
+        /* ── Tags ─────────────────────── */
+        .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+        .tag {
+            font-size: 0.68rem;
+            font-weight: 500;
+            padding: 0.18rem 0.5rem;
+            border-radius: 100px;
+            background: var(--bg-alt);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        /* ── Code ─────────────────────── */
+        .code-block {
             background: var(--code-bg);
-            border-radius: 10px;
-            margin: 1rem 0;
+            border-radius: 8px;
+            margin: 0.75rem 0;
             overflow: hidden;
         }
-        .code-header {
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem 1rem;
+        .code-label {
+            padding: 0.4rem 0.9rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.5);
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
             display: flex;
             justify-content: space-between;
-            align-items: center;
         }
-        .code-header .lang {
-            color: var(--teal);
-            font-weight: 500;
-        }
+        .code-label .lang { color: var(--teal); font-weight: 500; }
         pre {
-            padding: 1rem;
+            padding: 0.9rem;
             overflow-x: auto;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             line-height: 1.6;
             color: var(--code-text);
         }
-        .comment { color: #8b949e; }
-        .keyword { color: #ff7b72; }
-        .string { color: #a5d6ff; }
-        .function { color: #d2a8ff; }
-        .decorator { color: #79c0ff; }
-        .class-name { color: #7ee787; }
+        .kw { color: #f472b6; }
+        .fn { color: #c4b5fd; }
+        .st { color: #7dd3fc; }
+        .cm { color: #64748b; }
+        .cn { color: #86efac; }
+        .dc { color: #93c5fd; }
 
-        /* ── Explanation Boxes ─────────── */
-        .explain {
-            background: linear-gradient(135deg, #f0f7ff, #f5f0ff);
-            border-left: 3px solid var(--purple);
-            border-radius: 0 8px 8px 0;
-            padding: 1rem 1.2rem;
-            margin: 1rem 0;
-            font-size: 0.9rem;
+        /* ── Callouts ─────────────────── */
+        .callout {
+            font-size: 0.84rem;
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            margin: 0.75rem 0;
+            line-height: 1.5;
         }
-        .explain strong { color: var(--purple); }
-        .explain.tip {
-            background: linear-gradient(135deg, #f0fff4, #e8f5e9);
-            border-left-color: var(--green);
+        .callout strong { display: block; font-size: 0.78rem; margin-bottom: 0.2rem; }
+        .callout code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.76rem;
+            background: rgba(0,0,0,0.05);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
         }
-        .explain.tip strong { color: #27ae60; }
-        .explain.warning {
-            background: linear-gradient(135deg, #fff8e1, #fff3e0);
-            border-left-color: var(--accent);
+        .callout-info { background: var(--accent-light); border-left: 3px solid var(--accent); }
+        .callout-info strong { color: var(--accent); }
+        .callout-tip { background: var(--teal-light); border-left: 3px solid var(--teal); }
+        .callout-tip strong { color: var(--teal); }
+        .callout-warn { background: var(--orange-light); border-left: 3px solid var(--orange); }
+        .callout-warn strong { color: var(--orange); }
+
+        /* ── Quick Start ──────────────── */
+        .quickstart {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
         }
-        .explain.warning strong { color: var(--accent); }
+        .quickstart h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .qs-tabs { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .qs-tab {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .qs-tab:hover, .qs-tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        .qs-panel { display: none; }
+        .qs-panel.active { display: block; }
 
         /* ── Footer ───────────────────── */
         footer {
-            background: var(--dark);
-            color: rgba(255,255,255,0.6);
+            border-top: 1px solid var(--border);
             text-align: center;
-            padding: 2rem;
-            font-size: 0.85rem;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
         }
-        footer a { color: var(--teal); }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
 
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 1.8rem; }
-            nav .container { gap: 0.5rem; }
-            nav a { font-size: 0.75rem; padding: 0.2rem 0.5rem; }
+        @media (max-width: 640px) {
+            .variants { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.5rem; }
+            nav a { font-size: 0.72rem; padding: 0.25rem 0.45rem; }
         }
     </style>
 </head>
 <body>
 
-<!-- ═══ Hero ═══════════════════════════════════════════════ -->
-<header class="hero">
-    <h1>🏗️ Horizon Code Companion</h1>
-    <p class="subtitle">
-        Every code snippet from <em>Software Development Foundations in the Age of Agentic AI</em> — explained, tested, and ready to run.
-    </p>
-    <span class="badge"><span class="green">✓</span> 81 tests passing · Python 3.12 · MIT License</span>
+<!-- ── Header ──────────────────────────────────────────── -->
+<header>
+    <div class="container">
+        <h1>Horizon Code Companion</h1>
+        <p>Every code snippet from <em>Software Development Foundations in the Age of Agentic AI</em> — explained, tested, and ready to run.</p>
+        <div class="badges">
+            <span class="badge"><span class="dot"></span> 81 tests passing</span>
+            <span class="badge">Python 3.12</span>
+            <span class="badge">Django 5</span>
+            <span class="badge">MIT License</span>
+        </div>
+    </div>
 </header>
 
-<!-- ═══ Nav ════════════════════════════════════════════════ -->
+<!-- ── Nav ──────────────────────────────────────────────── -->
 <nav>
     <div class="container">
-        <a href="#ch3">Ch.3 CLI</a>
-        <a href="#ch4">Ch.4 Models</a>
-        <a href="#ch5">Ch.5 Services</a>
-        <a href="#ch6">Ch.6 Database</a>
-        <a href="#ch7">Ch.7 API</a>
-        <a href="#ch9">Ch.9 Testing</a>
-        <a href="#ch10">Ch.10 Security</a>
-        <a href="#ch11">Ch.11 Errors</a>
-        <a href="#ch12">Ch.12 CI/CD</a>
-        <a href="#ch13">Ch.13 Docker</a>
-        <a href="https://github.com/Asembereng/horizon-companion" target="_blank">GitHub →</a>
+        <a href="#variants">Variants</a>
+        <a href="#part-i">Foundations</a>
+        <a href="#part-ii">Design</a>
+        <a href="#part-iii">Quality</a>
+        <a href="#part-iv">Delivery</a>
+        <a href="#part-vi">Django</a>
+        <a href="#part-viii">Enterprise</a>
+        <a href="#quickstart">Quick Start</a>
+        <a href="https://github.com/asembereng/horizon-companion" target="_blank" class="gh">GitHub &rarr;</a>
     </div>
 </nav>
 
-<!-- ═══ Chapter Content ═══════════════════════════════════ -->
-<main class="chapters">
+<main>
     <div class="container">
 
-        <h2>Code Walkthrough by Chapter</h2>
-        <p style="margin-bottom:2rem;color:#636e72;">Click any chapter to see the code, what it teaches, and how to run it yourself.</p>
+    <!-- ── Three Variants ──────────────────────────────── -->
+    <div class="variants" id="variants">
+        <div class="variant-card v-core">
+            <div class="label">Parts I &ndash; V</div>
+            <h3>Classic (stdlib)</h3>
+            <p>Pure Python. No frameworks. SQLite, <code>http.server</code>, bcrypt, pytest.</p>
+            <code>horizon/core/</code>
+        </div>
+        <div class="variant-card v-django">
+            <div class="label">Parts VI &ndash; VII</div>
+            <h3>Django / DRF</h3>
+            <p>Django 5, REST Framework, PostgreSQL 16, JWT auth, django-filter.</p>
+            <code>horizon/django/</code>
+        </div>
+        <div class="variant-card v-enterprise">
+            <div class="label">Part VIII</div>
+            <h3>Enterprise</h3>
+            <p>Celery 5.4, Redis, Docker Compose, async tasks, production stack.</p>
+            <code>horizon/enterprise/</code>
+        </div>
+    </div>
 
-        <!-- ── Part I: Foundations ──────────────── -->
-        <div class="part-label">Part I — Foundations</div>
+    <!-- ════ PART I ═══════════════════════════════════════ -->
+    <div class="part-header" id="part-i">Part I &mdash; Foundations</div>
 
-        <div class="chapter-card" id="ch3">
-            <h3>Chapter 3: Programming Fundamentals — The CLI Task Creator</h3>
-            <div class="file-ref">📁 horizon/cli.py · tests/test_ch03_cli.py</div>
-            <p>Your first Horizon program: a command-line tool that creates, lists, updates, and deletes tasks. Introduces functions, data structures, input validation, and the CRUD pattern.</p>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">Python</span> horizon/cli.py</div>
-<pre><span class="keyword">def</span> <span class="function">create_task</span>(title: <span class="class-name">str</span>, assignee: <span class="class-name">str</span>, priority: <span class="class-name">int</span> = 0) -> <span class="class-name">dict</span>:
-    <span class="string">"""Create a new task and add it to the task list."""</span>
-    <span class="keyword">if not</span> validate_title(title):
-        <span class="keyword">raise</span> <span class="class-name">ValueError</span>(<span class="string">f"Title cannot be empty or exceed 200 characters."</span>)
+    <div class="card" id="ch3">
+        <h3>Chapter 3: Programming Fundamentals</h3>
+        <div class="file-ref">horizon/core/cli.py &middot; tests/test_ch03_cli.py</div>
+        <p>A command-line tool that creates, lists, updates, and deletes tasks. Functions, data structures, input validation, and the CRUD pattern.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> cli.py</div>
+<pre><span class="kw">def</span> <span class="fn">create_task</span>(title: <span class="cn">str</span>, assignee: <span class="cn">str</span>, priority: <span class="cn">int</span> = 0) -> <span class="cn">dict</span>:
+    <span class="st">"""Create a new task and add it to the task list."""</span>
+    <span class="kw">if not</span> validate_title(title):
+        <span class="kw">raise</span> <span class="cn">ValueError</span>(<span class="st">"Title cannot be empty or exceed 200 characters."</span>)
 
     task = {
-        <span class="string">"id"</span>: _next_id,
-        <span class="string">"title"</span>: title.strip(),
-        <span class="string">"assignee"</span>: assignee,
-        <span class="string">"status"</span>: <span class="string">"to_do"</span>,
-        <span class="string">"priority"</span>: priority,
+        <span class="st">"id"</span>: _next_id,
+        <span class="st">"title"</span>: title.strip(),
+        <span class="st">"assignee"</span>: assignee,
+        <span class="st">"status"</span>: <span class="st">"to_do"</span>,
+        <span class="st">"priority"</span>: priority,
     }
     tasks.append(task)
-    <span class="keyword">return</span> task</pre>
-            </div>
-
-            <div class="explain">
-                <strong>What you learn here:</strong> Every function does <em>one thing</em> (Single Responsibility). <code>validate_title()</code> checks validity; <code>create_task()</code> creates. Input is validated <em>before</em> processing — a pattern you'll use in every chapter going forward.
-            </div>
-
-            <div class="concepts">
-                <span class="concept-tag">Functions</span>
-                <span class="concept-tag">Dictionaries</span>
-                <span class="concept-tag">Input validation</span>
-                <span class="concept-tag">CRUD operations</span>
-                <span class="concept-tag">Error handling</span>
-            </div>
+    <span class="kw">return</span> task</pre>
         </div>
-
-        <!-- ── Part II: Building with Intention ───── -->
-        <div class="part-label">Part II — Building with Intention</div>
-
-        <div class="chapter-card" id="ch4">
-            <h3>Chapter 4 & 5: Clean Code & Design Principles — Domain Models</h3>
-            <div class="file-ref">📁 horizon/models.py · horizon/services.py</div>
-            <p>Transforms the simple dictionary approach into proper domain models using dataclasses, enums, and the SOLID principles. Introduces the Repository pattern and dependency injection.</p>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">Python</span> horizon/models.py</div>
-<pre><span class="decorator">@dataclass</span>
-<span class="keyword">class</span> <span class="class-name">Task</span>:
-    <span class="string">"""A Horizon task — SRP: holds task data only."""</span>
-    id: <span class="class-name">int</span>
-    title: <span class="class-name">str</span>
-    assignee: <span class="class-name">User</span>
-    status: <span class="class-name">TaskStatus</span> = TaskStatus.TO_DO
-    priority: <span class="class-name">TaskPriority</span> = TaskPriority.NORMAL
-
-    <span class="keyword">def</span> <span class="function">can_be_deleted_by</span>(self, user: <span class="class-name">User</span>) -> <span class="class-name">bool</span>:
-        <span class="string">"""Only the assignee can delete a task."""</span>
-        <span class="keyword">return</span> user.id == self.assignee.id</pre>
-            </div>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">Python</span> horizon/models.py — Dependency Inversion</div>
-<pre><span class="keyword">class</span> <span class="class-name">TaskRepository</span>(<span class="class-name">Protocol</span>):
-    <span class="string">"""Abstract interface — depend on this, not a concrete DB."""</span>
-    <span class="keyword">def</span> <span class="function">save</span>(self, task: <span class="class-name">Task</span>) -> <span class="class-name">Task</span>: ...
-    <span class="keyword">def</span> <span class="function">find_by_id</span>(self, task_id: <span class="class-name">int</span>) -> <span class="class-name">Task</span> | <span class="keyword">None</span>: ...
-    <span class="keyword">def</span> <span class="function">delete</span>(self, task_id: <span class="class-name">int</span>) -> <span class="class-name">bool</span>: ...</pre>
-            </div>
-
-            <div class="explain">
-                <strong>SOLID in action:</strong> <code>Task</code> holds data (SRP). <code>TaskRepository</code> is a Protocol — an abstract interface (DIP). <code>TaskService</code> depends on the interface, not a specific database. You can swap SQLite for PostgreSQL without changing a single line in the service layer.
-            </div>
-
-            <div class="concepts">
-                <span class="concept-tag">Dataclasses</span>
-                <span class="concept-tag">Enums</span>
-                <span class="concept-tag">SRP</span>
-                <span class="concept-tag">OCP</span>
-                <span class="concept-tag">DIP</span>
-                <span class="concept-tag">Protocol/Interface</span>
-                <span class="concept-tag">Repository pattern</span>
-            </div>
+        <div class="callout callout-info">
+            <strong>What you learn</strong>
+            Every function does <em>one thing</em> (Single Responsibility). Input is validated before processing &mdash; a pattern used in every chapter.
         </div>
+        <div class="tags">
+            <span class="tag">Functions</span>
+            <span class="tag">Dictionaries</span>
+            <span class="tag">Input validation</span>
+            <span class="tag">CRUD</span>
+        </div>
+    </div>
 
-        <div class="chapter-card" id="ch5" style="border-left-color: var(--purple);">
-            <h3>Chapter 5: Service Layer — Coordinating Operations</h3>
-            <div class="file-ref">📁 horizon/services.py</div>
-            <p>The service layer coordinates operations between models, repositories, and notification services. Demonstrates dependency injection — the service receives its dependencies, it doesn't create them.</p>
+    <!-- ════ PART II ══════════════════════════════════════ -->
+    <div class="part-header" id="part-ii">Part II &mdash; Building with Intention</div>
 
-            <div class="code-section">
-                <div class="code-header"><span class="lang">Python</span> horizon/services.py</div>
-<pre><span class="keyword">class</span> <span class="class-name">TaskService</span>:
-    <span class="keyword">def</span> <span class="function">__init__</span>(self, repo: <span class="class-name">TaskRepository</span>, notifier: <span class="class-name">NotificationService</span> | <span class="keyword">None</span> = <span class="keyword">None</span>):
-        self._repo = repo        <span class="comment"># Injected — could be in-memory or SQL</span>
-        self._notifier = notifier <span class="comment"># Injected — could be console or email</span>
+    <div class="card" id="ch4">
+        <h3>Chapters 4 &amp; 5: Clean Code &amp; Design Principles</h3>
+        <div class="file-ref">horizon/core/models.py &middot; horizon/core/services.py</div>
+        <p>Dictionaries become proper domain models with dataclasses, enums, and SOLID principles. The Repository pattern and dependency injection decouple storage from logic.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> models.py</div>
+<pre><span class="dc">@dataclass</span>
+<span class="kw">class</span> <span class="cn">Task</span>:
+    id: <span class="cn">int</span>
+    title: <span class="cn">str</span>
+    assignee: <span class="cn">User</span>
+    status: <span class="cn">TaskStatus</span> = TaskStatus.TO_DO
+    priority: <span class="cn">TaskPriority</span> = TaskPriority.NORMAL
 
-    <span class="keyword">def</span> <span class="function">delete_task</span>(self, task_id: <span class="class-name">int</span>, requesting_user: <span class="class-name">User</span>) -> <span class="class-name">bool</span>:
-        <span class="string">"""Delete a task IF the user has permission."""</span>
+    <span class="kw">def</span> <span class="fn">can_be_deleted_by</span>(self, user: <span class="cn">User</span>) -> <span class="cn">bool</span>:
+        <span class="kw">return</span> user.id == self.assignee.id
+
+<span class="kw">class</span> <span class="cn">TaskRepository</span>(<span class="cn">Protocol</span>):
+    <span class="cm"># Abstract interface &mdash; depend on this, not a concrete DB</span>
+    <span class="kw">def</span> <span class="fn">save</span>(self, task: <span class="cn">Task</span>) -> <span class="cn">Task</span>: ...
+    <span class="kw">def</span> <span class="fn">find_by_id</span>(self, task_id: <span class="cn">int</span>) -> <span class="cn">Task</span> | <span class="kw">None</span>: ...
+    <span class="kw">def</span> <span class="fn">delete</span>(self, task_id: <span class="cn">int</span>) -> <span class="cn">bool</span>: ...</pre>
+        </div>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> services.py &mdash; Dependency Injection</div>
+<pre><span class="kw">class</span> <span class="cn">TaskService</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, repo: <span class="cn">TaskRepository</span>, notifier: <span class="cn">NotificationService</span> | <span class="kw">None</span> = <span class="kw">None</span>):
+        self._repo = repo        <span class="cm"># Could be in-memory or SQL</span>
+        self._notifier = notifier <span class="cm"># Could be console or email</span>
+
+    <span class="kw">def</span> <span class="fn">delete_task</span>(self, task_id: <span class="cn">int</span>, requesting_user: <span class="cn">User</span>) -> <span class="cn">bool</span>:
         task = self._repo.find_by_id(task_id)
-        <span class="keyword">if not</span> task.can_be_deleted_by(requesting_user):
-            <span class="keyword">raise</span> <span class="class-name">PermissionError</span>(<span class="string">"Not authorized"</span>)
-        <span class="keyword">return</span> self._repo.delete(task_id)</pre>
-            </div>
-
-            <div class="explain tip">
-                <strong>💡 Key insight:</strong> Notice <code>TaskService.__init__</code> takes <code>repo</code> and <code>notifier</code> as parameters. This is dependency injection. In tests, you pass <code>InMemoryTaskRepository</code>. In production, you pass <code>SQLiteTaskRepository</code>. The service doesn't know or care which one — it just calls <code>.save()</code>.
-            </div>
+        <span class="kw">if not</span> task.can_be_deleted_by(requesting_user):
+            <span class="kw">raise</span> <span class="cn">PermissionError</span>(<span class="st">"Not authorized"</span>)
+        <span class="kw">return</span> self._repo.delete(task_id)</pre>
         </div>
+        <div class="callout callout-tip">
+            <strong>Key insight</strong>
+            <code>TaskService</code> takes <code>repo</code> as a parameter. In tests, pass <code>InMemoryTaskRepository</code>. In production, pass <code>SQLiteTaskRepository</code>. The service never knows or cares which one.
+        </div>
+        <div class="tags">
+            <span class="tag">Dataclasses</span>
+            <span class="tag">Enums</span>
+            <span class="tag">SRP</span>
+            <span class="tag">OCP</span>
+            <span class="tag">DIP</span>
+            <span class="tag">Protocol</span>
+            <span class="tag">Repository pattern</span>
+        </div>
+    </div>
 
-        <div class="chapter-card" id="ch6">
-            <h3>Chapter 6: Data Modeling — SQLite Database</h3>
-            <div class="file-ref">📁 horizon/database.py · tests/test_ch06_database.py</div>
-            <p>Real database persistence using SQLite. Demonstrates SQL schema design, parameterised queries (preventing SQL injection), and the repository pattern with a concrete implementation.</p>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">SQL</span> Schema (inside database.py)</div>
-<pre><span class="keyword">CREATE TABLE IF NOT EXISTS</span> tasks (
-    id          <span class="class-name">INTEGER</span> <span class="keyword">PRIMARY KEY AUTOINCREMENT</span>,
-    title       <span class="class-name">TEXT</span>    <span class="keyword">NOT NULL</span>,
-    status      <span class="class-name">TEXT</span>    <span class="keyword">NOT NULL DEFAULT</span> <span class="string">'to_do'</span>,
-    priority    <span class="class-name">INTEGER</span> <span class="keyword">NOT NULL DEFAULT</span> 1,
-    assignee_id <span class="class-name">INTEGER</span> <span class="keyword">NOT NULL REFERENCES</span> users(id),
-    project_id  <span class="class-name">INTEGER</span> <span class="keyword">REFERENCES</span> projects(id),
-    created_at  <span class="class-name">TEXT</span>    <span class="keyword">NOT NULL DEFAULT</span> (datetime(<span class="string">'now'</span>))
+    <div class="card" id="ch6">
+        <h3>Chapter 6: Data Modeling</h3>
+        <div class="file-ref">horizon/core/database.py &middot; tests/test_ch06_database.py</div>
+        <p>SQLite persistence with parameterised queries, foreign keys, and the concrete repository implementation.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">SQL</span> Schema</div>
+<pre><span class="kw">CREATE TABLE IF NOT EXISTS</span> tasks (
+    id          <span class="cn">INTEGER</span> <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+    title       <span class="cn">TEXT</span>    <span class="kw">NOT NULL</span>,
+    status      <span class="cn">TEXT</span>    <span class="kw">NOT NULL DEFAULT</span> <span class="st">'to_do'</span>,
+    priority    <span class="cn">INTEGER</span> <span class="kw">NOT NULL DEFAULT</span> 1,
+    assignee_id <span class="cn">INTEGER</span> <span class="kw">NOT NULL REFERENCES</span> users(id),
+    project_id  <span class="cn">INTEGER</span> <span class="kw">REFERENCES</span> projects(id),
+    created_at  <span class="cn">TEXT</span>    <span class="kw">NOT NULL DEFAULT</span> (datetime(<span class="st">'now'</span>))
 );</pre>
-            </div>
-
-            <div class="explain warning">
-                <strong>⚠️ Security note:</strong> All queries use <code>?</code> placeholders — <em>never</em> f-strings or concatenation. <code>conn.execute("SELECT * FROM tasks WHERE id = ?", (task_id,))</code> prevents SQL injection attacks. This is non-negotiable in production code.
-            </div>
-
-            <div class="concepts">
-                <span class="concept-tag">SQL</span>
-                <span class="concept-tag">Normalisation</span>
-                <span class="concept-tag">Foreign keys</span>
-                <span class="concept-tag">Parameterised queries</span>
-                <span class="concept-tag">Context managers</span>
-            </div>
         </div>
-
-        <div class="chapter-card" id="ch7" style="border-left-color: var(--accent);">
-            <h3>Chapter 7: APIs — REST Endpoints</h3>
-            <div class="file-ref">📁 horizon/api.py · tests/test_ch07_api.py</div>
-            <p>A REST API using Python's built-in <code>http.server</code> — no external frameworks needed. Demonstrates HTTP methods, JSON responses, status codes, and RESTful resource design.</p>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">HTTP</span> API Design</div>
-<pre><span class="keyword">GET</span>    /health     <span class="comment">→ 200 {"status": "ok"}</span>
-<span class="keyword">GET</span>    /tasks      <span class="comment">→ 200 [{task}, {task}, ...]</span>
-<span class="keyword">GET</span>    /tasks/1    <span class="comment">→ 200 {task} or 404</span>
-<span class="keyword">POST</span>   /tasks      <span class="comment">→ 201 {created task} or 400</span>
-<span class="keyword">DELETE</span> /tasks/1    <span class="comment">→ 204 or 403 or 404</span></pre>
-            </div>
-
-            <div class="concepts">
-                <span class="concept-tag">REST</span>
-                <span class="concept-tag">HTTP methods</span>
-                <span class="concept-tag">Status codes</span>
-                <span class="concept-tag">JSON</span>
-                <span class="concept-tag">Content negotiation</span>
-            </div>
+        <div class="callout callout-warn">
+            <strong>Security</strong>
+            All queries use <code>?</code> placeholders &mdash; never f-strings. This prevents SQL injection attacks.
         </div>
-
-        <!-- ── Part III: Engineering for Quality ───── -->
-        <div class="part-label">Part III — Engineering for Quality</div>
-
-        <div class="chapter-card" id="ch9" style="border-left-color: var(--green);">
-            <h3>Chapter 9: Testing — The Safety Net</h3>
-            <div class="file-ref">📁 tests/test_ch03_cli.py through test_ch11_errors.py</div>
-            <p>81 tests covering every module. Demonstrates unit tests (isolated functions), integration tests (database queries), and API tests (HTTP endpoints). Uses pytest fixtures for clean setup.</p>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">Python</span> tests/test_ch05_services.py — Testing with Mocks</div>
-<pre><span class="keyword">def</span> <span class="function">test_delete_task_unauthorized</span>(self, service, amara, ben):
-    <span class="string">"""Ben tries to delete Amara's task — should fail."""</span>
-    task = service.create_task(<span class="string">"Task"</span>, amara)
-    <span class="keyword">with</span> pytest.raises(<span class="class-name">PermissionError</span>):
-        service.delete_task(task.id, ben)  <span class="comment"># Ben is not the assignee</span></pre>
-            </div>
-
-            <div class="explain tip">
-                <strong>💡 Testing philosophy:</strong> Notice we're testing <code>TaskService</code> with <code>InMemoryTaskRepository</code> — no database needed. That's the power of dependency injection: fast, isolated tests. The database tests in <code>test_ch06_database.py</code> test the SQLite implementation separately.
-            </div>
+        <div class="tags">
+            <span class="tag">SQL</span>
+            <span class="tag">Normalisation</span>
+            <span class="tag">Foreign keys</span>
+            <span class="tag">Parameterised queries</span>
         </div>
+    </div>
 
-        <div class="chapter-card" id="ch10" style="border-left-color: #e74c3c;">
-            <h3>Chapter 10: Security — Authentication & Defence in Depth</h3>
-            <div class="file-ref">📁 horizon/auth.py · tests/test_ch10_security.py</div>
-            <p>Password hashing with bcrypt, JWT-like token generation, input validation, and XSS sanitization. Demonstrates why security is code, not an afterthought.</p>
+    <div class="card" id="ch7">
+        <h3>Chapter 7: APIs</h3>
+        <div class="file-ref">horizon/core/api.py &middot; tests/test_ch07_api.py</div>
+        <p>A REST API using Python&rsquo;s built-in <code>http.server</code>. HTTP methods, JSON responses, status codes, RESTful resource design.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">HTTP</span> Endpoints</div>
+<pre><span class="kw">GET</span>    /health     <span class="cm">&rarr; 200 {"status": "ok"}</span>
+<span class="kw">GET</span>    /tasks      <span class="cm">&rarr; 200 [{task}, ...]</span>
+<span class="kw">GET</span>    /tasks/1    <span class="cm">&rarr; 200 {task} | 404</span>
+<span class="kw">POST</span>   /tasks      <span class="cm">&rarr; 201 {task} | 400</span>
+<span class="kw">DELETE</span> /tasks/1    <span class="cm">&rarr; 204 | 403 | 404</span></pre>
+        </div>
+        <div class="tags">
+            <span class="tag">REST</span>
+            <span class="tag">HTTP methods</span>
+            <span class="tag">Status codes</span>
+            <span class="tag">JSON</span>
+        </div>
+    </div>
 
-            <div class="code-section">
-                <div class="code-header"><span class="lang">Python</span> horizon/auth.py — Token Verification</div>
-<pre><span class="keyword">def</span> <span class="function">verify_token</span>(token: <span class="class-name">str</span>) -> <span class="class-name">dict</span> | <span class="keyword">None</span>:
-    <span class="string">"""Verify a token's signature and expiration."""</span>
-    parts = token.split(<span class="string">"."</span>)
-    <span class="keyword">if</span> len(parts) != 3: <span class="keyword">return</span> <span class="keyword">None</span>
+    <!-- ════ PART III ═════════════════════════════════════ -->
+    <div class="part-header" id="part-iii">Part III &mdash; Engineering for Quality</div>
+
+    <div class="card" id="ch9">
+        <h3>Chapter 9: Testing</h3>
+        <div class="file-ref">tests/test_ch03_cli.py &ndash; test_ch11_errors.py</div>
+        <p>81 tests covering every module. Unit tests, integration tests, and API tests. Pytest fixtures for clean, repeatable setup.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> test_ch05_services.py</div>
+<pre><span class="kw">def</span> <span class="fn">test_delete_task_unauthorized</span>(self, service, amara, ben):
+    <span class="st">"""Ben tries to delete Amara's task &mdash; should fail."""</span>
+    task = service.create_task(<span class="st">"Task"</span>, amara)
+    <span class="kw">with</span> pytest.raises(<span class="cn">PermissionError</span>):
+        service.delete_task(task.id, ben)</pre>
+        </div>
+        <div class="callout callout-tip">
+            <strong>Testing philosophy</strong>
+            <code>TaskService</code> is tested with <code>InMemoryTaskRepository</code>. No database needed. That&rsquo;s the power of dependency injection: fast, isolated tests.
+        </div>
+        <div class="tags">
+            <span class="tag">pytest</span>
+            <span class="tag">Fixtures</span>
+            <span class="tag">Unit tests</span>
+            <span class="tag">Integration tests</span>
+        </div>
+    </div>
+
+    <div class="card" id="ch10">
+        <h3>Chapter 10: Security</h3>
+        <div class="file-ref">horizon/core/auth.py &middot; tests/test_ch10_security.py</div>
+        <p>Password hashing with bcrypt (rounds=12), HMAC token generation, input validation, and XSS sanitization.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> auth.py</div>
+<pre><span class="kw">def</span> <span class="fn">verify_token</span>(token: <span class="cn">str</span>) -> <span class="cn">dict</span> | <span class="kw">None</span>:
+    parts = token.split(<span class="st">"."</span>)
+    <span class="kw">if</span> len(parts) != 3: <span class="kw">return</span> <span class="kw">None</span>
 
     header_b64, payload_b64, signature = parts
     expected = hmac.new(_SECRET_KEY.encode(),
-        f<span class="string">"{header_b64}.{payload_b64}"</span>.encode(), hashlib.sha256).hexdigest()
+        f<span class="st">"{header_b64}.{payload_b64}"</span>.encode(), hashlib.sha256).hexdigest()
 
-    <span class="keyword">if not</span> hmac.compare_digest(signature, expected):
-        <span class="keyword">return</span> <span class="keyword">None</span>  <span class="comment"># Tampered!</span></pre>
-            </div>
+    <span class="kw">if not</span> hmac.compare_digest(signature, expected):
+        <span class="kw">return</span> <span class="kw">None</span>  <span class="cm"># Tampered</span></pre>
+        </div>
+        <div class="callout callout-warn">
+            <strong>Production note</strong>
+            This is a simplified JWT for learning. In production, use <code>PyJWT</code> or <code>python-jose</code>. The concepts (signing, verification, expiration) are identical.
+        </div>
+        <div class="tags">
+            <span class="tag">bcrypt</span>
+            <span class="tag">HMAC</span>
+            <span class="tag">Tokens</span>
+            <span class="tag">Input sanitization</span>
+        </div>
+    </div>
 
-            <div class="explain warning">
-                <strong>⚠️ Production note:</strong> This is a simplified JWT implementation for learning. In production, use a library like <code>PyJWT</code> or <code>python-jose</code>. The concepts (signing, verification, expiration) are identical — the library handles edge cases.
+    <div class="card" id="ch11">
+        <h3>Chapter 11: Error Handling</h3>
+        <div class="file-ref">horizon/core/exceptions.py &middot; horizon/core/logging_config.py</div>
+        <p>Custom exception hierarchy and JSON-formatted structured logging.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> exceptions.py</div>
+<pre><span class="kw">class</span> <span class="cn">HorizonError</span>(<span class="cn">Exception</span>):
+    <span class="st">"""Base &mdash; catch all Horizon errors with one handler."""</span>
+
+<span class="kw">class</span> <span class="cn">ValidationError</span>(<span class="cn">HorizonError</span>): ...
+<span class="kw">class</span> <span class="cn">NotFoundError</span>(<span class="cn">HorizonError</span>): ...
+<span class="kw">class</span> <span class="cn">AuthenticationError</span>(<span class="cn">HorizonError</span>): ...
+<span class="kw">class</span> <span class="cn">AuthorizationError</span>(<span class="cn">HorizonError</span>): ...</pre>
+        </div>
+        <div class="tags">
+            <span class="tag">Exception hierarchy</span>
+            <span class="tag">Structured logging</span>
+            <span class="tag">JSON logs</span>
+        </div>
+    </div>
+
+    <!-- ════ PART IV ══════════════════════════════════════ -->
+    <div class="part-header" id="part-iv">Part IV &mdash; Delivering Software</div>
+
+    <div class="card" id="ch12">
+        <h3>Chapter 12: CI/CD</h3>
+        <div class="file-ref">.github/workflows/ci.yml &middot; .github/dependabot.yml</div>
+        <p>GitHub Actions pipeline: matrix testing across Python 3.11 and 3.12, ruff linting, pip-audit supply chain security scanning, and Dependabot for automated dependency updates.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">YAML</span> ci.yml</div>
+<pre><span class="kw">on:</span>
+  <span class="kw">push:</span>
+    <span class="kw">branches:</span> [main]
+  <span class="kw">pull_request:</span>
+    <span class="kw">branches:</span> [main]
+
+<span class="kw">jobs:</span>
+  <span class="kw">test:</span>
+    <span class="kw">strategy:</span>
+      <span class="kw">matrix:</span>
+        <span class="kw">python-version:</span> [<span class="st">"3.11"</span>, <span class="st">"3.12"</span>]
+    <span class="kw">steps:</span>
+      - <span class="kw">run:</span> pytest -v --cov=horizon
+
+  <span class="kw">supply-chain:</span>
+    <span class="kw">steps:</span>
+      - <span class="kw">run:</span> pip-audit -r requirements.txt</pre>
+        </div>
+        <div class="tags">
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Matrix builds</span>
+            <span class="tag">pip-audit</span>
+            <span class="tag">Dependabot</span>
+        </div>
+    </div>
+
+    <div class="card" id="ch13">
+        <h3>Chapter 13: Containers</h3>
+        <div class="file-ref">Dockerfile &middot; docker-compose.yml</div>
+        <p>Security-hardened Dockerfile with non-root user, layer caching, and health checks. Docker Compose for the full multi-service stack.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Dockerfile</span></div>
+<pre><span class="kw">FROM</span> python:3.12-slim
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> requirements.txt .
+<span class="kw">RUN</span> pip install --no-cache-dir -r requirements.txt
+<span class="kw">RUN</span> useradd --no-create-home appuser
+<span class="kw">COPY</span> horizon/ ./horizon/
+<span class="kw">USER</span> appuser
+<span class="kw">EXPOSE</span> 8000
+<span class="kw">HEALTHCHECK</span> --interval=30s --timeout=5s \
+    <span class="kw">CMD</span> python -c <span class="st">"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"</span>
+<span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"-m"</span>, <span class="st">"horizon.api"</span>]</pre>
+        </div>
+        <div class="callout callout-tip">
+            <strong>Layer caching</strong>
+            <code>requirements.txt</code> is copied and installed before app code. If only your code changes, the <code>pip install</code> step is cached and the rebuild is instant.
+        </div>
+        <div class="tags">
+            <span class="tag">Docker</span>
+            <span class="tag">Non-root user</span>
+            <span class="tag">Health checks</span>
+            <span class="tag">Layer caching</span>
+        </div>
+    </div>
+
+    <!-- ════ PART VI ══════════════════════════════════════ -->
+    <div class="part-header" id="part-vi">Parts VI &ndash; VII &mdash; Agentic Development with Django</div>
+
+    <div class="card" id="ch18">
+        <h3>Chapter 18: Django Bridge</h3>
+        <div class="file-ref">horizon/django/manage.py &middot; horizon/django/horizon_project/settings.py</div>
+        <p>Transitions Horizon from stdlib to Django 5 with DRF. Configures PostgreSQL, JWT authentication via SimpleJWT, django-filter, and pagination.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> settings.py (excerpt)</div>
+<pre>REST_FRAMEWORK = {
+    <span class="st">"DEFAULT_AUTHENTICATION_CLASSES"</span>: [
+        <span class="st">"rest_framework_simplejwt.authentication.JWTAuthentication"</span>,
+    ],
+    <span class="st">"DEFAULT_FILTER_BACKENDS"</span>: [
+        <span class="st">"django_filters.rest_framework.DjangoFilterBackend"</span>,
+    ],
+    <span class="st">"DEFAULT_PAGINATION_CLASS"</span>:
+        <span class="st">"rest_framework.pagination.PageNumberPagination"</span>,
+    <span class="st">"PAGE_SIZE"</span>: 20,
+}</pre>
+        </div>
+        <div class="tags">
+            <span class="tag">Django 5</span>
+            <span class="tag">DRF</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">JWT</span>
+            <span class="tag">SimpleJWT</span>
+        </div>
+    </div>
+
+    <div class="card" id="ch23">
+        <h3>Chapter 23: Coding Agent &mdash; ViewSets &amp; Serializers</h3>
+        <div class="file-ref">horizon/django/tasks/views.py &middot; tasks/serializers.py &middot; tasks/permissions.py</div>
+        <p>DRF ModelViewSet for CRUD, ModelSerializer with validation, and custom permission classes. Demonstrates how an AI coding agent would scaffold production-grade views.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> serializers.py</div>
+<pre><span class="kw">class</span> <span class="cn">TaskSerializer</span>(serializers.<span class="cn">ModelSerializer</span>):
+    <span class="kw">class</span> <span class="cn">Meta</span>:
+        model = Task
+        fields = [<span class="st">"id"</span>, <span class="st">"title"</span>, <span class="st">"status"</span>, <span class="st">"priority"</span>,
+                  <span class="st">"assignee"</span>, <span class="st">"project"</span>, <span class="st">"created_at"</span>, <span class="st">"updated_at"</span>]
+        read_only_fields = [<span class="st">"id"</span>, <span class="st">"created_at"</span>, <span class="st">"updated_at"</span>]</pre>
+        </div>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> views.py</div>
+<pre><span class="kw">class</span> <span class="cn">TaskViewSet</span>(viewsets.<span class="cn">ModelViewSet</span>):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated, IsAssigneeOrProjectAdmin]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = [<span class="st">"status"</span>, <span class="st">"assignee"</span>]
+    ordering = [<span class="st">"-priority"</span>, <span class="st">"created_at"</span>]</pre>
+        </div>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> permissions.py</div>
+<pre><span class="kw">class</span> <span class="cn">IsAssigneeOrProjectAdmin</span>(permissions.<span class="cn">BasePermission</span>):
+    <span class="kw">def</span> <span class="fn">has_object_permission</span>(self, request, view, obj):
+        <span class="kw">if</span> request.method <span class="kw">in</span> permissions.SAFE_METHODS:
+            <span class="kw">return True</span>
+        <span class="kw">return</span> (obj.assignee == request.user
+                <span class="kw">or</span> obj.project.admin == request.user)</pre>
+        </div>
+        <div class="tags">
+            <span class="tag">ModelViewSet</span>
+            <span class="tag">ModelSerializer</span>
+            <span class="tag">Permissions</span>
+            <span class="tag">Filtering</span>
+            <span class="tag">Ordering</span>
+        </div>
+    </div>
+
+    <div class="card" id="ch6-tx">
+        <h3>Chapter 6 (Django): Atomic Transactions</h3>
+        <div class="file-ref">horizon/django/tasks/transactions.py</div>
+        <p>Database transactions with <code>transaction.atomic()</code> and <code>select_for_update()</code> to prevent race conditions when completing tasks.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> transactions.py</div>
+<pre><span class="kw">from</span> django.db <span class="kw">import</span> transaction
+
+<span class="kw">def</span> <span class="fn">complete_task</span>(task_id: <span class="cn">int</span>) -> Task:
+    <span class="kw">with</span> transaction.atomic():
+        task = Task.objects.select_for_update().get(id=task_id)
+        task.complete()
+        task.save()
+        <span class="kw">return</span> task</pre>
+        </div>
+        <div class="tags">
+            <span class="tag">Transactions</span>
+            <span class="tag">select_for_update</span>
+            <span class="tag">Race conditions</span>
+        </div>
+    </div>
+
+    <div class="card" id="ch24">
+        <h3>Chapter 24: QA Agent &mdash; Django Tests</h3>
+        <div class="file-ref">horizon/django/tests/conftest.py &middot; tests/test_tasks.py</div>
+        <p>pytest-django tests with fixtures for users, projects, tasks, and authenticated API clients.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> test_tasks.py</div>
+<pre><span class="kw">class</span> <span class="cn">TestTaskAPI</span>:
+    <span class="kw">def</span> <span class="fn">test_auth_required</span>(self, api_client):
+        resp = api_client.get(<span class="st">"/api/tasks/"</span>)
+        <span class="kw">assert</span> resp.status_code == 401
+
+    <span class="kw">def</span> <span class="fn">test_list_tasks</span>(self, auth_client, task):
+        resp = auth_client.get(<span class="st">"/api/tasks/"</span>)
+        <span class="kw">assert</span> resp.status_code == 200
+        <span class="kw">assert</span> len(resp.data[<span class="st">"results"</span>]) == 1
+
+    <span class="kw">def</span> <span class="fn">test_filter_by_status</span>(self, auth_client, task):
+        resp = auth_client.get(<span class="st">"/api/tasks/?status=to_do"</span>)
+        <span class="kw">assert</span> resp.status_code == 200</pre>
+        </div>
+        <div class="tags">
+            <span class="tag">pytest-django</span>
+            <span class="tag">Fixtures</span>
+            <span class="tag">API tests</span>
+            <span class="tag">Authentication</span>
+        </div>
+    </div>
+
+    <!-- ════ PART VIII ════════════════════════════════════ -->
+    <div class="part-header" id="part-viii">Part VIII &mdash; Enterprise &amp; Production</div>
+
+    <div class="card" id="ch25">
+        <h3>Chapter 25: DevOps Agent &mdash; Celery &amp; Docker Compose</h3>
+        <div class="file-ref">horizon/enterprise/celery_app.py &middot; enterprise/tasks/celery_tasks.py &middot; docker-compose.yml</div>
+        <p>Async task processing with Celery and Redis. Docker Compose orchestrates PostgreSQL, Redis, the web app, and a Celery worker in one command.</p>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">Python</span> celery_tasks.py</div>
+<pre><span class="kw">from</span> celery <span class="kw">import</span> shared_task
+
+<span class="dc">@shared_task</span>
+<span class="kw">def</span> <span class="fn">send_task_notification</span>(task_id: <span class="cn">int</span>, message: <span class="cn">str</span>) -> <span class="cn">dict</span>:
+    <span class="st">"""Send async notification when a task is updated."""</span>
+    <span class="kw">return</span> {<span class="st">"task_id"</span>: task_id, <span class="st">"status"</span>: <span class="st">"sent"</span>}
+
+<span class="dc">@shared_task</span>
+<span class="kw">def</span> <span class="fn">generate_project_report</span>(project_id: <span class="cn">int</span>) -> <span class="cn">dict</span>:
+    <span class="st">"""Generate a project progress report asynchronously."""</span>
+    <span class="kw">return</span> {<span class="st">"project_id"</span>: project_id, <span class="st">"status"</span>: <span class="st">"generated"</span>}</pre>
+        </div>
+        <div class="code-block">
+            <div class="code-label"><span class="lang">YAML</span> docker-compose.yml</div>
+<pre><span class="kw">services:</span>
+  <span class="kw">db:</span>
+    <span class="kw">image:</span> postgres:16-alpine
+    <span class="kw">healthcheck:</span>
+      <span class="kw">test:</span> [<span class="st">"CMD-SHELL"</span>, <span class="st">"pg_isready -U horizon"</span>]
+
+  <span class="kw">redis:</span>
+    <span class="kw">image:</span> redis:7-alpine
+
+  <span class="kw">web:</span>
+    <span class="kw">build:</span> .
+    <span class="kw">depends_on:</span>
+      db: { <span class="kw">condition:</span> service_healthy }
+      redis: { <span class="kw">condition:</span> service_started }
+
+  <span class="kw">celery:</span>
+    <span class="kw">build:</span> .
+    <span class="kw">command:</span> celery -A horizon.enterprise.celery_app worker -l info</pre>
+        </div>
+        <div class="tags">
+            <span class="tag">Celery</span>
+            <span class="tag">Redis</span>
+            <span class="tag">Docker Compose</span>
+            <span class="tag">Async tasks</span>
+            <span class="tag">PostgreSQL</span>
+        </div>
+    </div>
+
+    <!-- ── Quick Start ─────────────────────────────────── -->
+    <div class="quickstart" id="quickstart">
+        <h3>Quick Start</h3>
+        <div class="qs-tabs">
+            <button class="qs-tab active" onclick="showTab('qs-core')">Classic (stdlib)</button>
+            <button class="qs-tab" onclick="showTab('qs-django')">Django</button>
+            <button class="qs-tab" onclick="showTab('qs-enterprise')">Enterprise</button>
+        </div>
+        <div class="qs-panel active" id="qs-core">
+            <div class="code-block">
+                <div class="code-label"><span class="lang">bash</span></div>
+<pre>git clone https://github.com/asembereng/horizon-companion.git
+cd horizon-companion
+python3 -m venv venv &amp;&amp; source venv/bin/activate
+pip install -r requirements.txt
+pytest -v
+python -m horizon.cli</pre>
             </div>
         </div>
-
-        <div class="chapter-card" id="ch11">
-            <h3>Chapter 11: Error Handling — Exceptions & Structured Logging</h3>
-            <div class="file-ref">📁 horizon/exceptions.py · horizon/logging_config.py</div>
-            <p>Custom exception hierarchy for clean error handling, plus JSON-formatted structured logging for production observability.</p>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">Python</span> horizon/exceptions.py</div>
-<pre><span class="keyword">class</span> <span class="class-name">HorizonError</span>(<span class="class-name">Exception</span>):
-    <span class="string">"""Base exception — catch all Horizon errors with one line."""</span>
-
-<span class="keyword">class</span> <span class="class-name">ValidationError</span>(<span class="class-name">HorizonError</span>): ...
-<span class="keyword">class</span> <span class="class-name">NotFoundError</span>(<span class="class-name">HorizonError</span>): ...
-<span class="keyword">class</span> <span class="class-name">AuthenticationError</span>(<span class="class-name">HorizonError</span>): ...
-<span class="keyword">class</span> <span class="class-name">AuthorizationError</span>(<span class="class-name">HorizonError</span>): ...</pre>
-            </div>
-
-            <div class="explain">
-                <strong>Why custom exceptions?</strong> Instead of bare <code>raise Exception("not found")</code>, you raise <code>NotFoundError("Task", 42)</code>. This gives callers specific error types to catch, includes structured data (resource, identifier), and makes debugging trivial — the error tells you <em>what</em> wasn't found and <em>which ID</em> was missing.
+        <div class="qs-panel" id="qs-django">
+            <div class="code-block">
+                <div class="code-label"><span class="lang">bash</span></div>
+<pre>cd horizon/django
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver</pre>
             </div>
         </div>
-
-        <!-- ── Part IV: Delivering Software ───────── -->
-        <div class="part-label">Part IV — Delivering Software</div>
-
-        <div class="chapter-card" id="ch12" style="border-left-color: #3498db;">
-            <h3>Chapter 12: CI/CD — GitHub Actions Pipeline</h3>
-            <div class="file-ref">📁 .github/workflows/ci.yml</div>
-            <p>Automated testing on every push and pull request. Tests against Python 3.11 and 3.12, generates coverage reports, and runs code quality checks.</p>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">YAML</span> .github/workflows/ci.yml</div>
-<pre><span class="keyword">on:</span>
-  <span class="keyword">push:</span>
-    <span class="keyword">branches:</span> [main]
-  <span class="keyword">pull_request:</span>
-    <span class="keyword">branches:</span> [main]
-
-<span class="keyword">jobs:</span>
-  <span class="keyword">test:</span>
-    <span class="keyword">runs-on:</span> ubuntu-latest
-    <span class="keyword">strategy:</span>
-      <span class="keyword">matrix:</span>
-        <span class="keyword">python-version:</span> [<span class="string">"3.11"</span>, <span class="string">"3.12"</span>]
-    <span class="keyword">steps:</span>
-      - <span class="keyword">run:</span> pytest -v --cov=horizon</pre>
+        <div class="qs-panel" id="qs-enterprise">
+            <div class="code-block">
+                <div class="code-label"><span class="lang">bash</span></div>
+<pre>docker-compose up --build</pre>
             </div>
         </div>
-
-        <div class="chapter-card" id="ch13" style="border-left-color: #2980b9;">
-            <h3>Chapter 13: Containers — Dockerfile</h3>
-            <div class="file-ref">📁 Dockerfile</div>
-            <p>Packages Horizon into a Docker container with layer caching, health checks, and a slim base image. Run anywhere with: <code>docker build -t horizon . && docker run -p 8000:8000 horizon</code></p>
-
-            <div class="code-section">
-                <div class="code-header"><span class="lang">Dockerfile</span> Dockerfile</div>
-<pre><span class="keyword">FROM</span> python:3.12-slim
-<span class="keyword">WORKDIR</span> /app
-<span class="keyword">COPY</span> requirements.txt .
-<span class="keyword">RUN</span> pip install --no-cache-dir -r requirements.txt
-<span class="keyword">COPY</span> horizon/ ./horizon/
-<span class="keyword">EXPOSE</span> 8000
-<span class="keyword">HEALTHCHECK</span> --interval=30s --timeout=5s \
-    <span class="keyword">CMD</span> python -c <span class="string">"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"</span>
-<span class="keyword">CMD</span> [<span class="string">"python"</span>, <span class="string">"-m"</span>, <span class="string">"horizon.api"</span>]</pre>
-            </div>
-
-            <div class="explain tip">
-                <strong>💡 Layer caching:</strong> Notice <code>requirements.txt</code> is copied and installed <em>before</em> the application code. Docker caches each layer — so if only your code changes (not dependencies), the <code>pip install</code> step is cached and the rebuild is instant.
-            </div>
-        </div>
+    </div>
 
     </div>
 </main>
 
-<!-- ═══ Footer ════════════════════════════════════════════ -->
+<!-- ── Footer ──────────────────────────────────────────── -->
 <footer>
-    <p>
-        🏗️ Horizon Code Companion · Part of <em>Software Development Foundations in the Age of Agentic AI</em><br>
-        <a href="https://github.com/Asembereng/horizon-companion">View on GitHub</a> · 81 tests passing · MIT License
-    </p>
+    <div class="container">
+        Horizon Code Companion &middot; <em>Software Development Foundations in the Age of Agentic AI</em><br>
+        <a href="https://github.com/asembereng/horizon-companion">View on GitHub</a> &middot; 81 tests passing &middot; MIT License
+    </div>
 </footer>
 
+<script>
+function showTab(id) {
+    document.querySelectorAll('.qs-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.qs-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
 </body>
 </html>
